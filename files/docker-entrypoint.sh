@@ -3,7 +3,8 @@ set -euo pipefail
 
 id
 
-cd /home/container
+cd /home/container/factorio
+echo "Changed to /home/container/factorio"
 
 FACTORIO_VOL=/home/container/factorio
 mkdir -p "$FACTORIO_VOL"
@@ -12,6 +13,8 @@ mkdir -p "$CONFIG"
 mkdir -p "$MODS"
 mkdir -p "$SCENARIOS"
 mkdir -p "$SCRIPTOUTPUT"
+
+echo "Making directories"
 
 if [ ! -f "$CONFIG/rconpw" ]; then
   # Generate a new RCON password if none exists

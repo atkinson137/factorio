@@ -37,6 +37,8 @@ RUN mkdir -p /opt /home/container/factorio && \
     adduser -u "$PUID" -G "$GROUP" -s /bin/sh -h /home/container -SDH "$USER" && \
     chown -R "$USER":"$GROUP" /opt/factorio /home/container/factorio
 
+USER container
+
 VOLUME /home/container/factorio
 
 EXPOSE $PORT/udp $RCON_PORT/tcp
