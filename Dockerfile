@@ -45,4 +45,4 @@ WORKDIR /home/container/factorio
 
 COPY files/ .
 
-CMD ["/bin/bash" "docker-entrypoint.sh"]
+CMD ["/bin/sh", "docker-entrypoint.sh"]

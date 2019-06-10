@@ -82,4 +82,4 @@ ${MODIFIED_STARTUP}
 
 
   #./bin/x64/factorio --port {{SERVER_PORT}} --server-settings data/server-settings.json --start-server {{SAVE_NAME}}.zip
-  #exec $SU_EXEC /opt/factorio/bin/x64/factorio --port "{{SERVER_PORT}}" --start-server-load-latest --server-settings "$CONFIG/server-settings.json" --server-banlist "$CONFIG/server-banlist.json" --rcon-port "$RCON_PORT" --server-whitelist "$CONFIG/server-whitelist.json" --use-server-whitelist --server-adminlist "$CONFIG/server-adminlist.json" --rcon-password "$(cat "$CONFIG/rconpw")" --server-id /factorio/config/server-id.json "$@"
+  #exec $SU_EXEC /opt/factorio/bin/x64/factorio --port "{{SERVER_PORT}}" --start-server-load-latest --server-settings "{{CONFIG}}/server-settings.json" --server-banlist "{{CONFIG}}/server-banlist.json" --rcon-port "$RCON_PORT" --server-whitelist "{{CONFIG}}/server-whitelist.json" --use-server-whitelist --server-adminlist "{{CONFIG}}/server-adminlist.json" --rcon-password "$(cat "{{CONFIG}}/rconpw")" --server-id /factorio/config/server-id.json "$@"
