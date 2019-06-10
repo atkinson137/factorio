@@ -3,7 +3,7 @@ FROM frolvlad/alpine-glibc:alpine-3.9
 LABEL maintainer="https://github.com/factoriotools/factorio-docker"
 
 ARG USER=container
-ARG GROUP=factorio
+ARG GROUP=container
 ARG PUID=845
 ARG PGID=845
 

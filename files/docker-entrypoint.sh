@@ -39,12 +39,12 @@ fi
 
 if [ "$(id -u)" = '0' ]; then
   # Update the User and Group ID based on the PUID/PGID variables
-  usermod -o -u "$PUID" factorio
-  groupmod -o -g "$PGID" factorio
-  # Take ownership of factorio data if running as root
-  chown -R factorio:factorio "$FACTORIO_VOL"
-  # Drop to the factorio user
-  SU_EXEC="su-exec factorio"
+  usermod -o -u "$PUID" container
+  groupmod -o -g "$PGID" container
+  # Take ownership of container data if running as root
+  chown -R container:container "$FACTORIO_VOL"
+  # Drop to the container user
+  SU_EXEC="su-exec container"
 else
   SU_EXEC=""
 fi
