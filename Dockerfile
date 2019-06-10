@@ -35,7 +35,8 @@ RUN mkdir -p /opt /home/container/factorio && \
     apk del .build-deps && \
     addgroup -g "$PGID" -S "$GROUP" && \
     adduser -u "$PUID" -G "$GROUP" -s /bin/sh -h /home/container -SDH "$USER" && \
-    chown -R "$USER":"$GROUP" /opt/factorio /home/container/factorio
+    chown -R "$USER":"$GROUP" /opt/factorio /home/container && \
+    ls -lA /home
 
 USER container
 
