@@ -5,7 +5,7 @@ id
 
 cd /home/container
 
-FACTORIO_VOL=/factorio
+FACTORIO_VOL=/home/container/factorio
 mkdir -p "$FACTORIO_VOL"
 mkdir -p "$SAVES"
 mkdir -p "$CONFIG"
@@ -53,21 +53,33 @@ NRSAVES=$( find -L "$SAVES" -iname \*.zip -mindepth 1 | wc -l )
 if [ "$NRSAVES" -eq 0 ]; then
   # Generate a new map if no save ZIPs exist
   $SU_EXEC /opt/factorio/bin/x64/factorio \
-    --create "$SAVES/_autosave1.zip" \
+    --create "$SAVES/$SAVE_NAME.zip" \
     --map-gen-settings "$CONFIG/map-gen-settings.json" \
     --map-settings "$CONFIG/map-settings.json"
 fi
 
+# Replace Startup Variables
+MODIFIED_STARTUP=`eval echo $(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')`
+echo ":/home/container$ ${MODIFIED_STARTUP}"
+
+# Run the Server
+${MODIFIED_STARTUP}
+
 # shellcheck disable=SC2086
-exec $SU_EXEC /opt/factorio/bin/x64/factorio \
-  --port "$PORT" \
-  --start-server-load-latest \
-  --server-settings "$CONFIG/server-settings.json" \
-  --server-banlist "$CONFIG/server-banlist.json" \
-  --rcon-port "$RCON_PORT" \
-  --server-whitelist "$CONFIG/server-whitelist.json" \
-  --use-server-whitelist \
-  --server-adminlist "$CONFIG/server-adminlist.json" \
-  --rcon-password "$(cat "$CONFIG/rconpw")" \
-  --server-id /factorio/config/server-id.json \
-  "$@"
+#exec $SU_EXEC /opt/factorio/bin/x64/factorio \
+#  --port "{{SERVER_PORT}}" \
+#  --start-server-load-latest \
+#  --server-settings "$CONFIG/server-settings.json" \
+#  --server-banlist "$CONFIG/server-banlist.json" \
+#  --rcon-port "$RCON_PORT" \
+#  --server-whitelist "$CONFIG/server-whitelist.json" \
+#  --use-server-whitelist \
+#  --server-adminlist "$CONFIG/server-adminlist.json" \
+#  --rcon-password "$(cat "$CONFIG/rconpw")" \
+#  --server-id /factorio/config/server-id.json \
+#  "$@"
+
+
+
+  #./bin/x64/factorio --port {{SERVER_PORT}} --server-settings data/server-settings.json --start-server {{SAVE_NAME}}.zip
+  #exec $SU_EXEC /opt/factorio/bin/x64/factorio --port "{{SERVER_PORT}}" --start-server-load-latest --server-settings "$CONFIG/server-settings.json" --server-banlist "$CONFIG/server-banlist.json" --rcon-port "$RCON_PORT" --server-whitelist "$CONFIG/server-whitelist.json" --use-server-whitelist --server-adminlist "$CONFIG/server-adminlist.json" --rcon-password "$(cat "$CONFIG/rconpw")" --server-id /factorio/config/server-id.json "$@"

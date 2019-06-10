@@ -11,15 +11,15 @@ ENV PORT=34197 \
     RCON_PORT=27015 \
     VERSION=0.17.47 \
     SHA1=504edefb1651aaec6a943dd74b0c7aba1b9551a0 \
-    SAVES=/factorio/saves \
-    CONFIG=/factorio/config \
-    MODS=/factorio/mods \
-    SCENARIOS=/factorio/scenarios \
-    SCRIPTOUTPUT=/factorio/script-output \
+    SAVES=/home/container/factorio/saves \
+    CONFIG=/home/container/factorio/config \
+    MODS=/home/container/factorio/mods \
+    SCENARIOS=/home/container/factorio/scenarios \
+    SCRIPTOUTPUT=/home/container/factorio/script-output \
     PUID="$PUID" \
     PGID="$PGID"
 
-RUN mkdir -p /opt /factorio && \
+RUN mkdir -p /opt /home/container/factorio && \
     apk add --update --no-cache pwgen su-exec binutils gettext libintl shadow && \
     apk add --update --no-cache --virtual .build-deps curl && \
     curl -sSL "https://www.factorio.com/get-download/$VERSION/headless/linux64" \
@@ -35,14 +35,14 @@ RUN mkdir -p /opt /factorio && \
     apk del .build-deps && \
     addgroup -g "$PGID" -S "$GROUP" && \
     adduser -u "$PUID" -G "$GROUP" -s /bin/sh -h /home/container -SDH "$USER" && \
-    chown -R "$USER":"$GROUP" /opt/factorio /factorio
+    chown -R "$USER":"$GROUP" /opt/factorio /home/container/factorio
 
-VOLUME /factorio
+VOLUME /home/container/factorio
 
 EXPOSE $PORT/udp $RCON_PORT/tcp
 
-COPY files/ /
+WORKDIR /home/container/factorio
 
-WORKDIR /home/container
+COPY files/ .
 
-CMD ["/bin/bash" "/docker-entrypoint.sh"]
+CMD ["/bin/bash" "docker-entrypoint.sh"]
