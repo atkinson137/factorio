@@ -2,7 +2,7 @@ FROM frolvlad/alpine-glibc:alpine-3.9
 
 LABEL maintainer="https://github.com/factoriotools/factorio-docker"
 
-ARG USER=factorio
+ARG USER=container
 ARG GROUP=factorio
 ARG PUID=845
 ARG PGID=845
@@ -34,7 +34,7 @@ RUN mkdir -p /opt /factorio && \
     ln -s "$SCRIPTOUTPUT" /opt/factorio/script-output && \
     apk del .build-deps && \
     addgroup -g "$PGID" -S "$GROUP" && \
-    adduser -u "$PUID" -G "$GROUP" -s /bin/sh -SDH "$USER" && \
+    adduser -u "$PUID" -G "$GROUP" -s /bin/sh -h /home/container -SDH "$USER" && \
     chown -R "$USER":"$GROUP" /opt/factorio /factorio
 
 VOLUME /factorio
@@ -43,4 +43,6 @@ EXPOSE $PORT/udp $RCON_PORT/tcp
 
 COPY files/ /
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+WORKDIR /home/container
+
+CMD ["/bin/bash" "/docker-entrypoint.sh"]

@@ -3,6 +3,8 @@ set -euo pipefail
 
 id
 
+cd /home/container
+
 FACTORIO_VOL=/factorio
 mkdir -p "$FACTORIO_VOL"
 mkdir -p "$SAVES"
