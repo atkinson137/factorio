@@ -1,25 +1,25 @@
 FROM frolvlad/alpine-glibc:alpine-3.9
 
-LABEL maintainer="https://github.com/factoriotools/factorio-docker"
+LABEL maintainer="https://github.com/atkinson137/factorio"
 
-ARG USER=container
-ARG GROUP=container
+ARG USER=factorio
+ARG GROUP=factorio
 ARG PUID=845
 ARG PGID=845
 
 ENV PORT=34197 \
     RCON_PORT=27015 \
-    VERSION=0.17.47 \
-    SHA1=504edefb1651aaec6a943dd74b0c7aba1b9551a0 \
-    SAVES=/home/container/factorio/saves \
-    CONFIG=/home/container/factorio/config \
-    MODS=/home/container/factorio/mods \
-    SCENARIOS=/home/container/factorio/scenarios \
-    SCRIPTOUTPUT=/home/container/factorio/script-output \
+    VERSION=0.17.48 \
+    SHA1=db52809ddb5b9faccb7b397269586e932061f12c \
+    SAVES=/factorio/saves \
+    CONFIG=/factorio/config \
+    MODS=/factorio/mods \
+    SCENARIOS=/factorio/scenarios \
+    SCRIPTOUTPUT=/factorio/script-output \
     PUID="$PUID" \
     PGID="$PGID"
 
-RUN mkdir -p /opt /home/container/factorio && \
+RUN mkdir -p /opt /factorio && \
     apk add --update --no-cache pwgen su-exec binutils gettext libintl shadow && \
     apk add --update --no-cache --virtual .build-deps curl && \
     curl -sSL "https://www.factorio.com/get-download/$VERSION/headless/linux64" \
@@ -34,18 +34,13 @@ RUN mkdir -p /opt /home/container/factorio && \
     ln -s "$SCRIPTOUTPUT" /opt/factorio/script-output && \
     apk del .build-deps && \
     addgroup -g "$PGID" -S "$GROUP" && \
-    adduser -u "$PUID" -G "$GROUP" -s /bin/sh -h /home/container -SDH "$USER" && \
-    chown -R "$USER":"$GROUP" /opt/factorio /home/container && \
-    ls -lA /home
+    adduser -u "$PUID" -G "$GROUP" -s /bin/sh -SDH "$USER" && \
+    chown -R "$USER":"$GROUP" /opt/factorio /factorio
 
-USER container
-
-VOLUME /home/container/factorio
+VOLUME /factorio
 
 EXPOSE $PORT/udp $RCON_PORT/tcp
 
-WORKDIR /home/container/factorio
+COPY files/ /
 
-COPY files/ .
-
-CMD ["/bin/sh", "docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
